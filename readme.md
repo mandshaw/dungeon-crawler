@@ -1,6 +1,6 @@
 # Dungeon Crawler
 
-Based off the tutorial by Ourcase.co on [YouTube](https://www.youtube.com/playlist?list=PLumYWZ2t7CRtgjbZK0JMoXHjebeYmT85-)
+Based off the tutorial by Ourcade.co on [YouTube](https://www.youtube.com/playlist?list=PLumYWZ2t7CRtgjbZK0JMoXHjebeYmT85-)
 
 ![License](https://img.shields.io/badge/license-MIT-green)
 
