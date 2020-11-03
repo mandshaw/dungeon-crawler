@@ -7,7 +7,7 @@ export default class Preloader extends Phaser.Scene {
 
   preload() {
     // Load Dungeon Tile map
-    this.load.image("tiles", "tiles/dungeon_tiles.png");
+    this.load.image("tiles", "tiles/dungeon_tiles_extruded.png");
     this.load.tilemapTiledJSON("dungeon", "tiles/dungeon-01.json");
 
     // Add Hero Character
