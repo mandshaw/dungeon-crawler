@@ -12,6 +12,9 @@ export default class Preloader extends Phaser.Scene {
 
     // Add Hero Character
     this.load.atlas("faune", "character/fauna.png", "character/fauna.json");
+
+    // Add the Lizard NPC
+    this.load.atlas("lizard", "enemies/lizard.png", "enemies/lizard.json");
   }
 
   create() {
