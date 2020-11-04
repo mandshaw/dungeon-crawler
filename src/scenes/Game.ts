@@ -1,5 +1,8 @@
-import Phaser from "phaser";
+import Phaser, { Physics } from "phaser";
 import { debugDraw } from "../utils/debug";
+import { createLizardAnims } from "../anims/EnemyAnims";
+import { createHeroAnims } from "../anims/HeroAnims";
+import Lizard from "../enemies/Lizard";
 
 export default class Game extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -14,6 +17,10 @@ export default class Game extends Phaser.Scene {
   }
 
   create() {
+    // Start by creating all our Animations
+    createHeroAnims(this.anims);
+    createLizardAnims(this.anims);
+
     const map = this.make.tilemap({
       key: "dungeon",
     });
@@ -31,67 +38,21 @@ export default class Game extends Phaser.Scene {
     this.faune = this.physics.add.sprite(128, 128, "faune", "walk-down-3.png");
     this.faune.body.setSize(this.faune.width * 0.5, this.faune.height * 0.8);
 
-    // Hero animations
-    this.anims.create({
-      key: "faune-idle-down",
-      frames: [{ key: "faune", frame: "walk-down-3.png" }],
-    });
-
-    this.anims.create({
-      key: "faune-idle-up",
-      frames: [{ key: "faune", frame: "walk-up-3.png" }],
-    });
-
-    this.anims.create({
-      key: "faune-idle-side",
-      frames: [
-        {
-          key: "faune",
-          frame: "walk-side-3.png",
-        },
-      ],
-    });
-
-    this.anims.create({
-      key: "faune-run-down",
-      frames: this.anims.generateFrameNames("faune", {
-        start: 1,
-        end: 8,
-        prefix: "run-down-",
-        suffix: ".png",
-      }),
-      repeat: -1,
-      frameRate: 15,
-    });
-
-    this.anims.create({
-      key: "faune-run-side",
-      frames: this.anims.generateFrameNames("faune", {
-        start: 1,
-        end: 2,
-        prefix: "run-side-",
-        suffix: ".png",
-      }),
-      repeat: -1,
-      frameRate: 10,
-    });
-
-    this.anims.create({
-      key: "faune-run-up",
-      frames: this.anims.generateFrameNames("faune", {
-        start: 1,
-        end: 8,
-        prefix: "run-up-",
-        suffix: ".png",
-      }),
-      repeat: -1,
-      frameRate: 15,
-    });
-
     this.faune.anims.play("faune-idle-side");
+
+    // Add the Lizard NPCs to the game
+    const lizards = this.physics.add.group({
+      classType: Lizard,
+      createCallback: (gameObject) => {
+        const lizardGameObject = gameObject as Lizard;
+        lizardGameObject.body.onCollide = true;
+      },
+    });
+    lizards.get(256, 128, "lizard");
 
     // Add Collider
     this.physics.add.collider(this.faune, wallLayer);
+    this.physics.add.collider(lizards, wallLayer);
 
     // Add Camera to Follow the Hero
     this.cameras.main.startFollow(this.faune, true);
