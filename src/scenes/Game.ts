@@ -8,6 +8,9 @@ import Lizard from "../enemies/Lizard";
 import "../characters/Faune";
 import Faune from "../characters/Faune";
 
+// Import Scene EventEmitter
+import { sceneEvents } from "../events/EventCenter";
+
 export default class Game extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private faune!: Faune;
@@ -21,6 +24,9 @@ export default class Game extends Phaser.Scene {
   }
 
   create() {
+    // Load health ui
+    this.scene.run("game-ui");
+
     // Start by creating all our Animations
     createHeroAnims(this.anims);
     createLizardAnims(this.anims);
@@ -78,6 +84,8 @@ export default class Game extends Phaser.Scene {
     const dir = new Phaser.Math.Vector2(dx, dy).normalize().scale(200);
 
     this.faune.handleDamage(dir);
+
+    sceneEvents.emit("player-health-changed", this.faune.health);
   }
 
   update() {
